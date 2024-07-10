@@ -19,6 +19,18 @@ Back-Propagation Learning in Deep Spike-By-Spike Networks
 David Rotermund and Klaus R. Pawelzik
 https://www.frontiersin.org/journals/computational-neuroscience/articles/10.3389/fncom.2019.00055/full
 ```
+# CIFAR 10 Test run on RTX 4090
+
+Last epoch
+
+```
+Epoch: 369
+Actual lr:  1.0000e-10  1.0000e-09  1.0000e-10 
+Training: Loss=0.01888 Correct=92.36%
+Testing: Correct=85.25%
+Time: Training=12.0sec, Testing=2.3sec
+```
+
 
 # Network structure
 
