@@ -23,35 +23,15 @@ from make_optimize import make_optimize
 
 def main(
     lr_initial_nnmf: float = 0.01,
-    lr_initial_cnn: float = 0.001,
     lr_initial_cnn_top: float = 0.001,
-    lr_initial_cnn_skip: float = 0.001,
     lr_initial_norm: float = 0.001,
     iterations: int = 20,
-    use_nnmf: bool = True,
     dataset: str = "CIFAR10",  # "CIFAR10", "FashionMNIST", "MNIST"
-    enable_onoff: bool = False,
-    local_learning_all: bool = False,
-    local_learning_0: bool = False,
-    local_learning_1: bool = False,
-    local_learning_2: bool = False,
-    local_learning_3: bool = False,
-    local_learning_kl: bool = False,
-    max_pool: bool = False,
     only_print_network: bool = False,
-    use_identity: bool = False,
-    da_auto_mode: bool = False,
 ) -> None:
 
-    if local_learning_all:
-        local_learning_0 = True
-        local_learning_1 = True
-        local_learning_2 = True
-        local_learning_3 = True
+    da_auto_mode: bool = False  # Automatic Data Augmentation from TorchVision
     lr_limit: float = 1e-9
-
-    if use_identity:
-        use_nnmf = True
 
     torch_device: torch.device = (
         torch.device("cuda:0") if torch.cuda.is_available() else torch.device("cpu")
@@ -59,14 +39,9 @@ def main(
     torch.set_default_dtype(torch.float32)
 
     # Some parameters
-    batch_size_train: int = 50#0
-    batch_size_test: int = 50#0
+    batch_size_train: int = 50  # 0
+    batch_size_test: int = 50  # 0
     number_of_epoch: int = 5000
-
-    if use_nnmf:
-        prefix: str = "nnmf"
-    else:
-        prefix = "cnn"
 
     loss_mode: int = 0
     loss_coeffs_mse: float = 0.5
@@ -111,22 +86,11 @@ def main(
         parameters,
         name_list,
     ) = make_network(
-        use_nnmf=use_nnmf,
         input_dim_x=input_dim_x,
         input_dim_y=input_dim_y,
         input_number_of_channel=input_number_of_channel,
         iterations=iterations,
-        enable_onoff=enable_onoff,
-        local_learning=[
-            local_learning_0,
-            local_learning_1,
-            local_learning_2,
-            local_learning_3,
-        ],
-        local_learning_kl=local_learning_kl,
-        max_pool=max_pool,
         torch_device=torch_device,
-        use_identity=use_identity,
     )
 
     print(network)
@@ -152,8 +116,6 @@ def main(
         parameters=parameters,
         lr_initial=[
             lr_initial_cnn_top,
-            lr_initial_cnn_skip,
-            lr_initial_cnn,
             lr_initial_nnmf,
             lr_initial_norm,
         ],
@@ -166,9 +128,7 @@ def main(
         else:
             my_string += "-_"
 
-    default_path: str = (
-        f"{prefix}_iter{iterations}{my_string}0{local_learning_0}_1{local_learning_1}_2{local_learning_2}_3{local_learning_3}_kl{local_learning_kl}_max{max_pool}"
-    )
+    default_path: str = f"iter{iterations}{my_string}"
     log_dir: str = f"log_{default_path}"
 
     tb = SummaryWriter(log_dir=log_dir)

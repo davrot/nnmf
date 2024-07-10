@@ -1,5 +1,4 @@
 import torch
-from SplitOnOffLayer import SplitOnOffLayer
 from append_block import append_block
 from L1NormLayer import L1NormLayer
 from NNMF2d import NNMF2d
@@ -7,7 +6,6 @@ from append_parameter import append_parameter
 
 
 def make_network(
-    use_nnmf: bool,
     input_dim_x: int,
     input_dim_y: int,
     input_number_of_channel: int,
@@ -67,11 +65,7 @@ def make_network(
         (1, 1),
         (1, 1),
     ],
-    local_learning: list[bool] = [False, False, False, False],
-    local_learning_kl: bool = True,
-    max_pool: bool = True,
     enable_onoff: bool = False,
-    use_identity: bool = False,
 ) -> tuple[
     torch.nn.Sequential,
     list[list[torch.nn.parameter.Parameter]],
@@ -86,14 +80,11 @@ def make_network(
     assert len(number_of_output_channels) == len(stride_pool)
     assert len(number_of_output_channels) == len(padding_pool)
     assert len(number_of_output_channels) == len(dilation_pool)
-    assert len(number_of_output_channels) == len(local_learning)
 
     if enable_onoff:
         input_number_of_channel *= 2
 
     parameter_cnn_top: list[torch.nn.parameter.Parameter] = []
-    parameter_cnn_skip: list[torch.nn.parameter.Parameter] = []
-    parameter_cnn: list[torch.nn.parameter.Parameter] = []
     parameter_nnmf: list[torch.nn.parameter.Parameter] = []
     parameter_norm: list[torch.nn.parameter.Parameter] = []
 
@@ -103,10 +94,6 @@ def make_network(
 
     network = torch.nn.Sequential()
     network = network.to(torch_device)
-
-    if enable_onoff:
-        network.append(SplitOnOffLayer())
-        test_image = network[-1](test_image)
 
     for block_id in range(0, len(number_of_output_channels)):
 
@@ -122,16 +109,10 @@ def make_network(
             positive_function_type=positive_function_type,
             beta=beta,
             iterations=iterations,
-            local_learning=local_learning[block_id],
-            local_learning_kl=local_learning_kl,
             torch_device=torch_device,
             parameter_cnn_top=parameter_cnn_top,
-            parameter_cnn_skip=parameter_cnn_skip,
-            parameter_cnn=parameter_cnn,
             parameter_nnmf=parameter_nnmf,
             parameter_norm=parameter_norm,
-            use_nnmf=use_nnmf,
-            use_identity=use_identity,
         )
 
         if (kernel_size_pool[block_id][0] > 0) and (kernel_size_pool[block_id][1] > 0):
@@ -214,16 +195,12 @@ def make_network(
 
     parameters: list[list[torch.nn.parameter.Parameter]] = [
         parameter_cnn_top,
-        parameter_cnn_skip,
-        parameter_cnn,
         parameter_nnmf,
         parameter_norm,
     ]
 
     name_list: list[str] = [
         "cnn_top",
-        "cnn_skip",
-        "cnn",
         "nnmf",
         "batchnorm2d",
     ]

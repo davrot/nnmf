@@ -7,7 +7,6 @@ class NNMF2d(torch.nn.Module):
     in_channels: int
     out_channels: int
     weight: torch.Tensor
-    bias: None | torch.Tensor
     iterations: int
     epsilon: float | None
     init_min: float
@@ -16,8 +15,6 @@ class NNMF2d(torch.nn.Module):
     positive_function_type: int
     local_learning: bool
     local_learning_kl: bool
-    use_reconstruction: bool
-    skip_connection: bool
 
     def __init__(
         self,

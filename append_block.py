@@ -9,8 +9,6 @@ def append_block(
     out_channels: int,
     test_image: torch.Tensor,
     parameter_cnn_top: list[torch.nn.parameter.Parameter],
-    parameter_cnn_skip: list[torch.nn.parameter.Parameter],
-    parameter_cnn: list[torch.nn.parameter.Parameter],
     parameter_nnmf: list[torch.nn.parameter.Parameter],
     parameter_norm: list[torch.nn.parameter.Parameter],
     torch_device: torch.device,
@@ -24,8 +22,6 @@ def append_block(
     iterations: int = 20,
     local_learning: bool = False,
     local_learning_kl: bool = False,
-    use_nnmf: bool = True,
-    use_identity: bool = False,
     momentum: float = 0.1,
     track_running_stats: bool = False,
 ) -> torch.Tensor:
@@ -39,7 +35,6 @@ def append_block(
         kernel_size_internal[1] = test_image.shape[-1]
 
     # Main
-
     network.append(torch.nn.ReLU())
     test_image = network[-1](test_image)
 

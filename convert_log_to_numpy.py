@@ -19,7 +19,8 @@ def get_data(path: str = "log_cnn"):
     for id in range(0, len(te)):
         np_temp[id, 0] = te[id].step
         np_temp[id, 1] = te[id].value
-    print(np_temp[:, 1]/100)
+
+    print(np_temp[:, 1] / 100)
     return np_temp
 
 
