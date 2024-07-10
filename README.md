@@ -31,6 +31,11 @@ Testing: Correct=85.25%
 Time: Training=12.0sec, Testing=2.3sec
 ```
 
+Note: This is just one run. Even though we have set the seed to a fixed value, the whole network suffers strongly under non-determinism during lerning. 
+
+## Test performance 
+
+![Test Performance](Figure_1.png)
 
 # Network structure
 
