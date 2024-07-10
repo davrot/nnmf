@@ -85,3 +85,5 @@ nnmf: 173344
 batchnorm2d: 576
 total number of parameter: 188558
 ```
+
+We acknowledge support by the following grants: DFG: Efficient implementation of spike-by-spike neural networks using stochastic and approximate techniques (PA 569/6-1, GA 763/15-1), DFG SPP: Evolutionary optimisation of neural systems (SPP 2205) https://gepris.dfg.de/gepris/projekt/402741184 – Evolution of flexibility - optimisation of task-dependent information processing in the visual system (ER 324/5-1), Era-Net Neuron https://www.neuron-eranet.eu: I-See – Improved intra-cortical visual prostheses through complex coding and integration of spontaneous activity states (BMBF 01EW2104A), Stiftung Bremer Wertpapierboerse https://www.stiftung-bwb.de. 
