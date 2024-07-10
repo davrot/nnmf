@@ -30,7 +30,7 @@ Note: A block like
   (3): L1NormLayer()
   (4): NNMF2d(75, 32, pfunctype=0, local_learning=False)
 ```
-represents one(!) Con2d NNMF Layer. We just see more of the innards that for a normal Conv2d.
+represents one(!) Conv2d NNMF Layer. We just see more of the innards that for a normal Conv2d.
 
 
 ```
